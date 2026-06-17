@@ -1,875 +1,1215 @@
 <!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║               ULTRA STREAM PLATFORM — VERSION 2.0                   ║
+  ║                                                                      ║
+  ║  © 2026 DIMANCHE LUCKENSON NELLY. Tous droits réservés.             ║
+  ║  Ce logiciel est la propriété exclusive de DIMANCHE LUCKENSON NELLY. ║
+  ║  Toute reproduction, distribution ou modification sans               ║
+  ║  autorisation écrite préalable est strictement interdite.            ║
+  ║                                                                      ║
+  ║  Ultra Stream Platform — Gestion d'abonnements streaming             ║
+  ║  Développé et conçu par DIMANCHE LUCKENSON NELLY — Haïti, 2026      ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+-->
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ULTRA STREAM PREMIUM | © DIMANCHE LUCKENSON NELLY</title>
-    <style>
-        :root {
-            --primary: #E50914;
-            --primary-glow: rgba(229, 9, 20, 0.6);
-            --bg-dark: #0a0a0a;
-            --card-bg: #141414;
-            --input-bg: #222222;
-            --success: #25D366;
-            --email-blue: #0078d4;
-            --natcash: #FFCC00;
-            --admin-color: #00bcd4;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ultra Stream Platform — Gestion d'abonnements streaming en Haïti" />
+  <meta name="author" content="DIMANCHE LUCKENSON NELLY" />
+  <meta name="copyright" content="© 2026 DIMANCHE LUCKENSON NELLY. Tous droits réservés." />
+  <meta name="owner" content="DIMANCHE LUCKENSON NELLY" />
+  <meta name="generator" content="Ultra Stream Platform v2.0 — © 2026 DIMANCHE LUCKENSON NELLY" />
+  <meta property="og:title" content="Ultra Stream Platform" />
+  <meta property="og:description" content="© 2026 DIMANCHE LUCKENSON NELLY. Gestion d'abonnements streaming — Haïti." />
+  <title>Ultra Stream Platform — © 2026 DIMANCHE LUCKENSON NELLY</title>
 
-        @keyframes gradBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  <style>
+    /* ── Reset & Base ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0a0a0a;
+      --surface:  #141414;
+      --surface2: #1c1c1c;
+      --border:   #2a2a2a;
+      --primary:  #E50914;
+      --primary-h:#b0060f;
+      --text:     #ffffff;
+      --muted:    #a0a0a0;
+      --green:    #22c55e;
+      --yellow:   #f59e0b;
+      --red:      #ef4444;
+      --radius:   10px;
+      --shadow:   0 4px 24px rgba(0,0,0,.5);
+    }
+    html, body { height: 100%; font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); font-size: 15px; }
+    input, select, textarea, button { font-family: inherit; font-size: inherit; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-        body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(-45deg, #0a0a0a, #1c0507, #0a0a0a, #05141c);
-            background-size: 400% 400%;
-            animation: gradBackground 15s ease infinite;
-            color: white;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    /* ── Utilities ──────────────────────────────────────────────────── */
+    .hidden { display: none !important; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .w-full { width: 100%; }
+    .text-center { text-align: center; }
+    .text-sm { font-size: 13px; }
+    .text-xs { font-size: 11px; }
+    .text-muted { color: var(--muted); }
+    .text-primary { color: var(--primary); }
+    .text-green { color: var(--green); }
+    .text-red { color: var(--red); }
+    .text-yellow { color: var(--yellow); }
+    .font-bold { font-weight: 700; }
+    .font-semibold { font-weight: 600; }
+    .mt-1 { margin-top: 4px; }
+    .mt-2 { margin-top: 8px; }
+    .mt-4 { margin-top: 16px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-4 { margin-bottom: 16px; }
+    .p-2 { padding: 8px; }
+    .p-3 { padding: 12px; }
+    .p-4 { padding: 16px; }
+    .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        header {
-            text-align: center;
-            padding: 30px 0;
-            background: linear-gradient(to bottom, #000 80%, transparent);
-            border-bottom: 3px solid var(--primary);
-            box-shadow: 0 4px 25px var(--primary-glow);
-        }
+    /* ── Components ─────────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer;
+      font-weight: 600; font-size: 14px; transition: all .18s; white-space: nowrap;
+    }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-h); }
+    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover:not(:disabled) { background: var(--border); }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover:not(:disabled) { background: #16a34a; }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover:not(:disabled) { background: #b91c1c; }
+    .btn-yellow { background: var(--yellow); color: #000; }
+    .btn-yellow:hover:not(:disabled) { background: #d97706; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+    .btn-icon { padding: 8px; border-radius: 8px; }
+    .input {
+      width: 100%; padding: 10px 14px; border-radius: 8px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); outline: none; transition: border-color .18s;
+    }
+    .input:focus { border-color: var(--primary); }
+    .input::placeholder { color: var(--muted); }
+    .label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px; color: var(--text); }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    }
+    .badge-green { background: rgba(34,197,94,.15); color: var(--green); }
+    .badge-red   { background: rgba(239,68,68,.15);  color: var(--red); }
+    .badge-yellow{ background: rgba(245,158,11,.15); color: var(--yellow); }
+    .badge-gray  { background: rgba(160,160,160,.15);color: var(--muted); }
 
-        header h1 {
-            color: var(--primary);
-            margin: 0;
-            font-size: 2.3rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px var(--primary);
-        }
+    /* Toast */
+    #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+    .toast {
+      min-width: 260px; max-width: 360px; padding: 14px 18px; border-radius: var(--radius);
+      background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+      animation: slideIn .25s ease; display: flex; align-items: flex-start; gap: 10px;
+    }
+    .toast.success { border-left: 4px solid var(--green); }
+    .toast.error   { border-left: 4px solid var(--red); }
+    .toast.info    { border-left: 4px solid var(--primary); }
+    @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        .container {
-            width: 92%;
-            max-width: 1200px;
-            margin: 30px auto;
-            flex: 1;
-            transition: all 0.4s ease-in-out;
-        }
+    /* Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 1000;
+      display: flex; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,.7); animation: fadeUp .2s ease;
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+    }
+    .modal-body { padding: 24px; }
+    @keyframes fadeUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* Indicateur d'appareil en temps réel */
-        .device-detector-badge {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid #333;
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+    /* ── Auth Page ──────────────────────────────────────────────────── */
+    #page-auth { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+    .logo-icon { width: 44px; height: 44px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .logo-icon svg { width: 24px; height: 24px; fill: #fff; }
+    .logo-text { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+    .auth-card { width: 100%; max-width: 440px; }
+    .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+    .tab-btn { flex: 1; padding: 12px; background: none; border: none; color: var(--muted); cursor: pointer; font-weight: 600; border-bottom: 2px solid transparent; transition: all .18s; }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .form-group { margin-bottom: 16px; }
 
-        .box {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            border: 1px solid #252525;
-            margin-bottom: 30px;
-            position: relative;
-        }
+    /* ── Navbar ─────────────────────────────────────────────────────── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,.95);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .navbar-brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 20px; }
+    .navbar-brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
 
-        .hidden { display: none !important; }
+    /* ── Dashboard ──────────────────────────────────────────────────── */
+    #page-dashboard { min-height: 100vh; }
+    .dashboard-content { max-width: 960px; margin: 0 auto; padding: 32px 20px; }
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+    .plan-card {
+      background: var(--surface); border: 2px solid var(--border); border-radius: 14px;
+      padding: 24px; cursor: pointer; transition: all .2s; position: relative;
+    }
+    .plan-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(229,9,20,.15); }
+    .plan-card.selected { border-color: var(--primary); background: rgba(229,9,20,.06); }
+    .plan-card .check { position: absolute; top: 12px; right: 12px; background: var(--primary); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+    .plan-price { font-size: 28px; font-weight: 800; color: var(--primary); }
+    .plan-price span { font-size: 14px; font-weight: 400; color: var(--muted); }
+    .payment-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+    .natcash-number { font-size: 22px; font-weight: 800; letter-spacing: 1px; color: var(--primary); }
+    .proof-zone {
+      border: 2px dashed var(--border); border-radius: 10px; padding: 32px;
+      text-align: center; cursor: pointer; transition: all .18s;
+    }
+    .proof-zone:hover { border-color: var(--primary); background: rgba(229,9,20,.04); }
+    .status-banner {
+      background: linear-gradient(135deg, rgba(34,197,94,.1), rgba(34,197,94,.05));
+      border: 1px solid rgba(34,197,94,.3); border-radius: 12px; padding: 20px;
+    }
+    .progress-bar { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; margin-top: 10px; }
+    .progress-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width .5s; }
+    .msg-bubble { background: var(--surface2); border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; }
+    .msg-from-admin { border-left: 3px solid var(--primary); }
+    .msg-from-client { border-left: 3px solid var(--muted); }
 
-        /* --- CONFIGURATIONS DES GRILLES DYNAMIQUES SELON L'APPAREIL --- */
-        .plans-grid {
-            display: grid;
-            gap: 20px;
-            margin: 25px 0;
-            transition: grid-template-columns 0.4s;
-        }
+    /* ── Admin Panel ─────────────────────────────────────────────────── */
+    #page-admin { min-height: 100vh; }
+    .admin-content { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+    .stat-value { font-size: 32px; font-weight: 800; }
+    .stat-label { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .admin-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+    .admin-tab { padding: 10px 20px; background: none; border: none; color: var(--muted); cursor: pointer; font-weight: 600; border-bottom: 2px solid transparent; transition: all .18s; }
+    .admin-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: var(--surface2); padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); white-space: nowrap; }
+    td { padding: 12px 16px; border-top: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+    tr:hover td { background: rgba(255,255,255,.02); }
+    .actions-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .search-box { position: relative; }
+    .search-box input { padding-left: 36px; }
+    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
 
-        /* Adaptations injectées par le script de détection d'appareil */
-        .device-desktop .plans-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-        }
-        .device-tablet .plans-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-        }
-        .device-mobile .plans-grid {
-            grid-template-columns: 1fr !important;
-        }
+    /* ── Footer ─────────────────────────────────────────────────────── */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 20px 24px; text-align: center; color: var(--muted); font-size: 12px;
+    }
+    footer strong { color: var(--text); }
+    .copyright-seal {
+      display: inline-flex; align-items: center; gap: 6px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 999px; padding: 4px 14px; font-size: 11px;
+    }
 
-        .plan-card {
-            background-color: #0b0b0b;
-            border: 2px solid #333;
-            border-radius: 12px;
-            padding: 22px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .plan-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        .plan-card.selected {
-            border-color: var(--primary);
-            background-color: #220b0d;
-            box-shadow: 0 0 20px var(--primary);
-        }
-
-        .plan-price {
-            font-size: 1.7rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .plan-duration {
-            display: inline-block;
-            background-color: var(--primary);
-            font-size: 0.75rem;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-top: 5px;
-        }
-
-        /* Formulaires */
-        .form-group { margin-bottom: 15px; text-align: left; }
-        label { display: block; margin-bottom: 5px; color: #aaa; font-size: 0.9rem; }
-        input, select, textarea {
-            width: 100%; padding: 12px; background-color: var(--input-bg);
-            border: 1px solid #444; border-radius: 8px; color: white;
-            font-size: 1rem; box-sizing: border-box; transition: all 0.3s;
-        }
-        input:focus, textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 10px var(--primary-glow); }
-
-        /* Boutons */
-        .btn {
-            background-color: var(--primary); color: white; border: none;
-            padding: 14px 20px; font-size: 1rem; font-weight: bold;
-            border-radius: 8px; cursor: pointer; width: 100%; transition: all 0.3s;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn:hover { background-color: #ff121d; box-shadow: 0 0 15px var(--primary); }
-        .btn-whatsapp { background-color: var(--success); }
-        .btn-whatsapp:hover { background-color: #2edb72; box-shadow: 0 0 15px rgba(37, 211, 102, 0.6); }
-        .btn-email { background-color: var(--email-blue); }
-        .btn-email:hover { background-color: #108ee9; box-shadow: 0 0 15px rgba(0, 120, 212, 0.6); }
-        .btn-natcash { background-color: var(--natcash); color: #000; font-weight: bold; }
-        .btn-natcash:hover { background-color: #ffe055; }
-        .btn-cancel { background-color: #333; color: #ff5555; border: 1px solid #444; }
-        .btn-cancel:hover { background-color: #b80710; color: white; }
-        .btn-delete { background-color: #2a1114; color: #ff4444; border: 1px solid #552225; width: auto; font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; }
-        .btn-delete:hover { background-color: #e50914; color: white; }
-
-        /* Status & Badges */
-        .status-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: bold; }
-        .status-active { background-color: rgba(37,211,102,0.15); color: var(--success); border: 1px solid var(--success); }
-        .status-pending { background-color: rgba(255,204,0,0.15); color: var(--natcash); border: 1px solid var(--natcash); }
-        .status-none { background-color: rgba(255,255,255,0.1); color: #aaa; border: 1px solid #444; }
-
-        .natcash-notice { background: linear-gradient(135deg, #2b2302, #151101); border-left: 4px solid var(--natcash); padding: 15px; border-radius: 8px; text-align: left; margin: 15px 0; }
-        .warning-notice { background: rgba(229,9,20,0.1); border-left: 4px solid var(--primary); padding: 15px; border-radius: 8px; text-align: left; margin: 15px 0; font-size: 0.9rem; }
-        .copyright-tag { font-size: 0.75rem; color: #666; text-align: right; margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
-
-        /* Admin Table & Cards */
-        .admin-client-card { background-color: #0f0f0f; border: 1px solid #333; border-radius: 10px; padding: 20px; margin-bottom: 15px; text-align: left; }
-        .admin-client-card h4 { margin: 0 0 10px 0; color: var(--admin-color); font-size: 1.2rem; border-bottom: 1px solid #222; padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
-        
-        /* Table d'historique */
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 10px; text-align: left; font-size: 0.85rem; }
-        .history-table th { background-color: #222; color: #aaa; padding: 8px; border: 1px solid #333; }
-        .history-table td { padding: 8px; border: 1px solid #333; background-color: #0b0b0b; }
-
-        /* Chat Box Styles */
-        .chat-container { background-color: #0a0a0a; border: 1px solid #333; border-radius: 8px; padding: 15px; max-height: 200px; overflow-y: auto; margin-bottom: 10px; text-align: left; }
-        .msg { margin-bottom: 10px; padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; max-width: 85%; }
-        .msg-admin { background-color: #004d56; color: white; margin-left: auto; }
-
-        footer { text-align: center; padding: 25px; font-size: 0.85rem; color: #666; background-color: #050505; border-top: 1px solid #111; margin-top: auto; }
-    </style>
+    /* ── Responsive ─────────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .plans-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .navbar { padding: 0 12px; }
+      .dashboard-content, .admin-content { padding: 16px 12px; }
+      .actions-row .btn { font-size: 11px; padding: 5px 8px; }
+      td, th { padding: 10px 10px; }
+    }
+  </style>
 </head>
+
 <body>
 
-    <header>
-        <h1>Ultra Stream Platform</h1>
-    </header>
+<!-- ═══════════════════════════════════════════════════════ AUTH PAGE -->
+<div id="page-auth">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <span class="logo-text">UltraStream</span>
+  </div>
 
-    <div class="container" id="mainContainer">
-        
-        <!-- MODULE DE DÉTECTION APPAREIL EN TEMPS RÉEL -->
-        <div style="text-align: center;">
-            <div class="device-detector-badge">
-                🖥️ Mode d'affichage détecté : <strong id="detectedDeviceLabel" style="color: var(--admin-color);">Analyse...</strong>
-            </div>
-        </div>
-        
-        <!-- ÉCRAN 1 : CONNEXION / INSCRIPTION -->
-        <div id="authView" class="box">
-            <h2 id="authTitle" style="margin-top:0;">Connexion à votre espace</h2>
-            
-            <div id="registerFields" class="hidden">
-                <div class="form-group">
-                    <input id="regName" type="text" placeholder="Nom complet">
-                </div>
-                <div class="form-group">
-                    <input id="regPhone" type="tel" placeholder="Numéro WhatsApp (Ex: 33633283)">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="emailInput">Identifiant / Adresse Email :</label>
-                <input id="emailInput" type="text" placeholder="Entrez votre identifiant ou email">
-            </div>
-            <div class="form-group">
-                <label for="passwordInput">Mot de passe :</label>
-                <input id="passwordInput" type="password" placeholder="••••••••">
-            </div>
-
-            <button id="authBtn" class="btn" onclick="processAuth()">Valider l'accès</button>
-            <br>
-            <span id="toggleAuthLink" style="color:#aaa; font-size:0.9rem; cursor:pointer; text-decoration:underline; display:inline-block; margin-top:15px;" onclick="toggleAuthMode()">Pas encore de compte ? S'inscrire</span>
-            <div class="copyright-tag">© DROITS D'AUTEUR EXCLUSIFS : DIMANCHE LUCKENSON NELLY</div>
-        </div>
-
-        <!-- ÉCRAN 2 : USER VIEW A (COMMANDE DU PLAN) -->
-        <div id="userOrderView" class="box hidden">
-            <h2 style="margin-top:0;">Espace de Commande, <span class="client-display-name" style="color: var(--primary);">...</span> 📱</h2>
-            <div style="margin-bottom: 20px;">Statut d'activation : <span class="status-badge status-pending">En attente de plan</span></div>
-            
-            <h3>Étape 1 : Sélectionnez votre forfait</h3>
-            <div class="plans-grid">
-                <div class="plan-card" onclick="selectPlan('Eco', 500, 30, this)">
-                    <h3>Forfait Éco</h3>
-                    <div class="plan-price">500 HTG</div>
-                    <div class="plan-duration">Durée : 30 jours</div>
-                    <p style="font-size:0.85rem; color:#aaa; margin-top:10px;">🔹 Téléchargement inclus<br>❌ Partage du profil indisponible</p>
-                </div>
-                <div class="plan-card" onclick="selectPlan('Avancé', 1000, 35, this)">
-                    <h3>Forfait Avancé</h3>
-                    <div class="plan-price">1000 HTG</div>
-                    <div class="plan-duration">Durée : 35 jours</div>
-                    <p style="font-size:0.85rem; color:#aaa; margin-top:10px;">🔹 Téléchargement inclus<br>👥 Partage du profil à 1 personne</p>
-                </div>
-                <div class="plan-card" onclick="selectPlan('Pro VIP', 1500, 45, this)">
-                    <h3>Forfait Pro VIP</h3>
-                    <div class="plan-price">1500 HTG</div>
-                    <div class="plan-duration">Durée : 45 jours</div>
-                    <p style="font-size:0.85rem; color:#aaa; margin-top:10px;">🔹 Téléchargement inclus<br>👨‍👩‍👦 Partage du profil à 2 personnes</p>
-                </div>
-            </div>
-
-            <div id="paymentArea" class="hidden">
-                <div class="natcash-notice">
-                    <strong style="color: var(--natcash);">💰 Transfert NATCASH requis :</strong><br>
-                    Effectuez le versement sur notre compte de paiement unique : <strong>+509 3363 3283</strong>.<br>
-                    Gestionnaire légal de l'infrastructure : <strong class="admin-name-display">DIMANCHE Luckenson Nelly</strong>.
-                </div>
-                <button class="btn btn-natcash" style="margin-bottom:12px;" onclick="registerOrderInSystem()">1️⃣ Notifier le Système</button>
-                <button class="btn btn-whatsapp" onclick="sendOrderWhatsApp()">2️⃣ Envoyer le Reçu sur WhatsApp (+509 3363 3283)</button>
-            </div>
-
-            <!-- Module d'envoi direct au support client -->
-            <hr style="border:0; border-top:1px solid #222; margin:30px 0;">
-            <h3>💬 Rédiger un message au support client</h3>
-            <div class="chat-container" id="clientOrderChatZone"></div>
-            
-            <div class="form-group">
-                <textarea id="clientOrderSupportMsg" rows="2" placeholder="Écrivez votre problème ou question ici avant de choisir votre canal d'envoi..."></textarea>
-            </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <button class="btn btn-whatsapp" style="flex: 1; min-width: 200px; font-size: 0.9rem;" onclick="contactCustomerServiceWhatsApp('clientOrderSupportMsg')">📞 Support via mon WhatsApp</button>
-                <button class="btn btn-email" style="flex: 1; min-width: 200px; font-size: 0.9rem;" onclick="contactCustomerServiceEmail('clientOrderSupportMsg')">✉️ Support via mon Email (Pas de WhatsApp)</button>
-            </div>
-            
-            <br><br>
-            <button class="btn" style="background-color:#222; width:auto; font-size:0.9rem;" onclick="processLogout()">Déconnexion 🚪</button>
-            <div class="copyright-tag">© DROITS D'AUTEUR RESERVÉS : DIMANCHE LUCKENSON NELLY</div>
-        </div>
-
-        <!-- ÉCRAN 3 : USER VIEW B (PLAN ACTIF ET EN COURS) -->
-        <div id="userActiveView" class="box hidden">
-            <h2 style="margin-top:0;">Votre Espace Premium, <span class="client-display-name" style="color:var(--success);">...</span> 🎉</h2>
-            <div style="margin-bottom:20px;">Statut : <span class="status-badge status-active">Abonnement Validé & Actif</span></div>
-            
-            <div style="background-color:#0f0f0f; border:1px solid #222; padding:20px; border-radius:10px; text-align:left; margin-bottom:25px;">
-                <p>🍿 <strong>Forfait en cours :</strong> <span id="activePlanTitle" style="color:var(--primary); font-weight:bold;">...</span></p>
-                <p>⏳ <strong>Temps restant estimé :</strong> <span id="activePlanDays" style="font-weight:bold; color:var(--success);">...</span> jours restants</p>
-                <p style="font-size:0.85rem; color:#666;">Note : Vos accès personnalisés ont été traités en parallèle par le gestionnaire.</p>
-            </div>
-
-            <!-- Notes de l'administrateur et support -->
-            <h3>✉️ Messages & Mises à disposition de l'Admin</h3>
-            <div class="chat-container" id="clientActiveChatZone"></div>
-
-            <div class="form-group" style="margin-top:15px;">
-                <textarea id="clientActiveSupportMsg" rows="2" placeholder="Écrivez une question au gestionnaire..."></textarea>
-            </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px;">
-                <button class="btn btn-whatsapp" style="flex: 1; min-width: 200px; font-size: 0.9rem;" onclick="contactCustomerServiceWhatsApp('clientActiveSupportMsg')">📞 Support via mon WhatsApp</button>
-                <button class="btn btn-email" style="flex: 1; min-width: 200px; font-size: 0.9rem;" onclick="contactCustomerServiceEmail('clientActiveSupportMsg')">✉️ Support via mon Email</button>
-            </div>
-
-            <div class="warning-notice">
-                ⚠️ <strong>Avis d'annulation de forfait :</strong> Vous pouvez choisir de révoquer l'accès en cours si vous souhaitez commander un autre profil. Sachez cependant que **tout plan annulé n'est pas remboursé**.
-            </div>
-            
-            <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
-                <button class="btn btn-cancel" style="flex:1; min-width:200px;" onclick="cancelClientPlan()">🚫 Annuler mon Plan Actif</button>
-                <button class="btn" style="background-color:#222; width:auto; font-size:0.9rem;" onclick="processLogout()">Déconnexion 🚪</button>
-            </div>
-            <div class="copyright-tag">© DROITS D'AUTEUR RESERVÉS : DIMANCHE LUCKENSON NELLY</div>
-        </div>
-
-        <!-- ÉCRAN 4 : ESPACE ADMINISTRATEUR SUPRÊME -->
-        <div id="adminView" class="box hidden" style="border-color: var(--admin-color);">
-            <h2 style="margin-top:0; color:var(--admin-color);">🛠️ Panneau de Gestion Administrateur</h2>
-            <p style="text-align:left; color:#aaa;">Session Active : <strong class="admin-name-display">...</strong></p>
-            
-            <!-- PARAMÈTRES DE SÉCURITÉ ADMIN COMPLETS -->
-            <div style="background-color:#0f0f0f; padding:20px; border-radius:10px; border:1px solid #222; margin-bottom:25px; text-align:left;">
-                <h4 style="margin:0 0 15px 0; color:white; border-bottom:1px solid #333; padding-bottom:5px;">🔐 Sécurité & Configuration des Points de Contact</h4>
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:15px;">
-                    <div class="form-group">
-                        <label>Modifier l'ID Admin :</label>
-                        <input id="newAdminId" type="text" placeholder="Nouvel identifiant admin">
-                    </div>
-                    <div class="form-group">
-                        <label>Modifier le Mot de passe :</label>
-                        <input id="newAdminPassword" type="password" placeholder="Nouveau mot de passe maître">
-                    </div>
-                    <div class="form-group">
-                        <label>Modifier l'Email de Support :</label>
-                        <input id="newAdminEmail" type="email" placeholder="Ex: monemail@gmail.com">
-                    </div>
-                </div>
-                <button class="btn" style="width:auto; font-size:0.9rem; margin-top:10px; background-color: var(--admin-color);" onclick="updateAdminCredentials()">Sauvegarder les configurations maîtres</button>
-            </div>
-
-            <!-- HISTORIQUE CHRONOLOGIQUE DES COMMANDES -->
-            <div style="background-color:#0f0f0f; padding:20px; border-radius:10px; border:1px solid #222; margin-bottom:25px; text-align:left;">
-                <div style="display:flex; justify-content:between; align-items:center; flex-wrap:wrap; margin-bottom:12px; gap:10px;">
-                    <h3 style="margin:0; color:var(--natcash); flex:1;">📅 Historique Global des Commandes</h3>
-                    <button class="btn btn-delete" style="margin:0;" onclick="adminClearHistory()">Supprimer tout l'historique 🗑️</button>
-                </div>
-                
-                <div class="form-group" style="margin-bottom:15px;">
-                    <input id="historyFilterDate" type="text" placeholder="🔍 Rechercher par date ou mot-clé (Ex: 17/06/2026)..." oninput="filterHistoryTable()">
-                </div>
-
-                <div style="overflow-x:auto;">
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Date / Heure</th>
-                                <th>Client (Email)</th>
-                                <th>Plan Demandé</th>
-                                <th>Montant Brut</th>
-                                <th>Statut Archivé</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminHistoryTableBody">
-                            <!-- Rempli en JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <h3>👥 Liste des Comptes Clients Récents</h3>
-            <div id="adminClientsList"></div>
-
-            <button class="btn" style="background-color:#222; margin-top:20px;" onclick="processLogout()">Quitter la session Admin 🚪</button>
-            <div class="copyright-tag">© COMPTE DE SUPERVISION ADMIN : DIMANCHE LUCKENSON NELLY</div>
-        </div>
-
+  <div class="card auth-card">
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-login-btn" onclick="showAuthTab('login')">Connexion</button>
+      <button class="tab-btn" id="tab-register-btn" onclick="showAuthTab('register')">Inscription</button>
     </div>
 
-    <footer>
-        © Copyright 2026, DIMANCHE LUCKENSON NELLY. Tous droits réservés.<br>
-        <span style="font-size:0.75rem; color:#444;">Ultra Stream Core Engine — Real-time Device Layout System</span>
-    </footer>
-
-    <script>
-        // Initialisation de la couche de persistance locale
-        if (!localStorage.getItem("admin_id")) { localStorage.setItem("admin_id", "DIMANCHE Luckenson Nelly"); }
-        if (!localStorage.getItem("admin_password")) { localStorage.setItem("admin_password", "admin123"); }
-        if (!localStorage.getItem("admin_support_email")) { localStorage.setItem("admin_support_email", "luckensonnellyyy022@gmail.com"); }
-        if (!localStorage.getItem("global_clients_db")) { localStorage.setItem("global_clients_db", JSON.stringify({})); }
-        if (!localStorage.getItem("global_orders_history")) { localStorage.setItem("global_orders_history", JSON.stringify([])); }
-
-        let currentSessionEmail = localStorage.getItem("current_session_email");
-        let isLoginMode = true;
-        let selectedPlan = null;
-        let selectedAmount = 0;
-        let selectedDays = 0;
-
-        // --- MOTEUR DE DÉTECTION D'APPAREIL EN TEMPS RÉEL (FLUID ENGINE) ---
-        function detectAndApplyDeviceLayout() {
-            const container = document.getElementById("mainContainer");
-            const label = document.getElementById("detectedDeviceLabel");
-            const width = window.innerWidth;
-            
-            // Nettoyage préalable des modes
-            container.classList.remove("device-desktop", "device-tablet", "device-mobile");
-
-            if (width >= 1024) {
-                container.classList.add("device-desktop");
-                label.innerText = "💻 Ordinateur / Laptop (" + width + "px) - Grille Large";
-            } else if (width >= 600 && width < 1024) {
-                container.classList.add("device-tablet");
-                label.innerText = "平板 Tablette (" + width + "px) - Alignement Compact";
-            } else {
-                container.classList.add("device-mobile");
-                label.innerText = "📱 Smartphone / Android (" + width + "px) - Organisation Verticale";
-            }
-        }
-
-        // Écoute de la modification de taille de fenêtre en temps réel
-        window.addEventListener("resize", detectAndApplyDeviceLayout);
-
-        function updateAdminDisplays() {
-            const currentAdminId = localStorage.getItem("admin_id");
-            document.querySelectorAll(".admin-name-display").forEach(el => el.innerText = currentAdminId);
-        }
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            const title = document.getElementById("authTitle");
-            const toggleLink = document.getElementById("toggleAuthLink");
-            const regFields = document.getElementById("registerFields");
-
-            if (isLoginMode) {
-                title.innerText = "Connexion à votre espace";
-                toggleLink.innerText = "Pas encore de compte ? S'inscrire";
-                regFields.classList.add("hidden");
-            } else {
-                title.innerText = "Créer un nouveau compte";
-                toggleLink.innerText = "Déjà inscrit ? Se connecter";
-                regFields.classList.remove("hidden");
-            }
-        }
-
-        function processAuth() {
-            const idInput = document.getElementById("emailInput").value.trim();
-            const passwordInput = document.getElementById("passwordInput").value;
-            const targetAdminId = localStorage.getItem("admin_id");
-
-            if (!idInput || !passwordInput) return alert("Erreur : Veuillez renseigner l'ensemble des champs.");
-
-            if (idInput === targetAdminId) {
-                const masterPass = localStorage.getItem("admin_password");
-                if (passwordInput === masterPass) {
-                    alert(`👋 Connexion Administrateur autorisée : ${idInput}`);
-                    localStorage.setItem("current_session_email", "ADMIN");
-                    currentSessionEmail = "ADMIN";
-                    renderViews();
-                } else {
-                    alert("Mot de passe Administrateur erroné.");
-                }
-                return;
-            }
-
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-
-            if (isLoginMode) {
-                if (!db[idInput]) return alert("Ce compte n'existe pas dans le système.");
-                if (db[idInput].password !== passwordInput) return alert("Mot de passe client incorrect.");
-
-                alert(`👋 Bienvenue sur votre espace Ultra Stream !`);
-                localStorage.setItem("current_session_email", idInput);
-                currentSessionEmail = idInput;
-                renderViews();
-            } else {
-                const name = document.getElementById("regName").value.trim();
-                const phone = document.getElementById("regPhone").value.trim();
-
-                if (!name || !phone) return alert("Veuillez remplir vos informations personnelles d'inscription.");
-                if (db[idInput]) return alert("Erreur : Cette adresse email ou cet identifiant est déjà attribué.");
-
-                db[idInput] = {
-                    name: name,
-                    phone: phone,
-                    password: passwordInput,
-                    email: idInput,
-                    plan: "Aucun",
-                    amount: 0,
-                    daysLeft: 0,
-                    status: "NONE", 
-                    adminMessage: ""
-                };
-
-                localStorage.setItem("global_clients_db", JSON.stringify(db));
-                alert("Compte enregistré avec succès ! Vous pouvez maintenant vous connecter.");
-                toggleAuthMode();
-            }
-        }
-
-        function processLogout() {
-            localStorage.removeItem("current_session_email");
-            currentSessionEmail = null;
-            document.getElementById("emailInput").value = "";
-            document.getElementById("passwordInput").value = "";
-            renderViews();
-        }
-
-        function updateAdminCredentials() {
-            const newId = document.getElementById("newAdminId").value.trim();
-            const newPass = document.getElementById("newAdminPassword").value;
-            const newEmail = document.getElementById("newAdminEmail").value.trim();
-
-            if (newId) {
-                localStorage.setItem("admin_id", newId);
-                alert(`Identifiant Admin modifié : "${newId}"`);
-                document.getElementById("newAdminId").value = "";
-            }
-            if (newPass) {
-                if (newPass.length < 4) return alert("Le mot de passe doit contenir au moins 4 caractères.");
-                localStorage.setItem("admin_password", newPass);
-                alert("Mot de passe maître Administrateur mis à jour.");
-                document.getElementById("newAdminPassword").value = "";
-            }
-            if (newEmail) {
-                localStorage.setItem("admin_support_email", newEmail);
-                alert(`Email de destination support mis à jour : "${newEmail}"`);
-                document.getElementById("newAdminEmail").value = "";
-            }
-            updateAdminDisplays();
-            renderViews();
-        }
-
-        function renderViews() {
-            detectAndApplyDeviceLayout();
-            updateAdminDisplays();
-            document.getElementById("authView").classList.add("hidden");
-            document.getElementById("userOrderView").classList.add("hidden");
-            document.getElementById("userActiveView").classList.add("hidden");
-            document.getElementById("adminView").classList.add("hidden");
-
-            if (!currentSessionEmail) {
-                document.getElementById("authView").classList.remove("hidden");
-                return;
-            }
-
-            if (currentSessionEmail === "ADMIN") {
-                document.getElementById("adminView").classList.remove("hidden");
-                buildAdminDashboard();
-                return;
-            }
-
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            let user = db[currentSessionEmail];
-
-            const nameDisplays = document.querySelectorAll(".client-display-name");
-            nameDisplays.forEach(el => el.innerText = user.name);
-
-            if (user.status === "ACTIVE") {
-                document.getElementById("userActiveView").classList.remove("hidden");
-                document.getElementById("activePlanTitle").innerText = user.plan;
-                document.getElementById("activePlanDays").innerText = user.daysLeft;
-                
-                const chatZone = document.getElementById("clientActiveChatZone");
-                chatZone.innerHTML = user.adminMessage 
-                    ? `<div class="msg msg-admin"><strong>De l'Administration :</strong> ${user.adminMessage}</div>`
-                    : `<p style="font-size:0.9rem; color:#666; margin:0;">Aucune note d'accès disponible.</p>`;
-            } else {
-                document.getElementById("userOrderView").classList.remove("hidden");
-                const badge = document.querySelector("#userOrderView .status-badge");
-                
-                if (user.status === "PENDING") {
-                    badge.innerText = `En attente de validation (${user.plan})`;
-                    badge.className = "status-badge status-pending";
-                } else {
-                    badge.innerText = "Aucun plan commandé";
-                    badge.className = "status-badge status-none";
-                }
-
-                const chatZone = document.getElementById("clientOrderChatZone");
-                chatZone.innerHTML = user.adminMessage 
-                    ? `<div class="msg msg-admin"><strong>De l'Administration :</strong> ${user.adminMessage}</div>`
-                    : `<p style="font-size:0.9rem; color:#666; margin:0;">Aucun message d'instruction.</p>`;
-            }
-        }
-
-        function selectPlan(plan, amount, days, element) {
-            const cards = document.querySelectorAll(".plan-card");
-            cards.forEach(c => c.classList.remove("selected"));
-
-            element.classList.add("selected");
-            selectedPlan = plan;
-            selectedAmount = amount;
-            selectedDays = days;
-
-            document.getElementById("paymentArea").classList.remove("hidden");
-        }
-
-        function registerOrderInSystem() {
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            let history = JSON.parse(localStorage.getItem("global_orders_history"));
-
-            db[currentSessionEmail].plan = selectedPlan;
-            db[currentSessionEmail].amount = selectedAmount;
-            db[currentSessionEmail].daysLeft = selectedDays;
-            db[currentSessionEmail].status = "PENDING";
-
-            const now = new Date();
-            const timestamp = now.toLocaleDateString("fr-FR") + " " + now.toLocaleTimeString("fr-FR", {hour: '2-digit', minute:'2-digit'});
-            
-            history.unshift({
-                date: timestamp,
-                email: currentSessionEmail,
-                plan: selectedPlan,
-                amount: selectedAmount,
-                status: "PENDING"
-            });
-
-            localStorage.setItem("global_clients_db", JSON.stringify(db));
-            localStorage.setItem("global_orders_history", JSON.stringify(history));
-
-            alert("✅ Choix與historique sauvegardé. Procédez au paiement.");
-            renderViews();
-        }
-
-        function sendOrderWhatsApp() {
-            const ownerPhone = "50933633283";
-            const currentAdminName = localStorage.getItem("admin_id");
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            let user = db[currentSessionEmail];
-
-            const msg = `Bonjour ${currentAdminName}, je viens de soumettre mon plan sur le site.\n\n` +
-                        `📋 *CLIENT* : ${user.name}\n` +
-                        `- *ID Compte* : ${user.email}\n\n` +
-                        `💰 *DÉTAILS* : Forfait ${user.plan} (${user.amount} HTG) - ${user.daysLeft} jours.\n` +
-                        `Le versement Natcash a été opéré sur votre numéro. Merci !`;
-
-            window.open(`https://wa.me/${ownerPhone}?text=${encodeURIComponent(msg)}`, "_blank");
-        }
-
-        function contactCustomerServiceWhatsApp(textareaId) {
-            const ownerPhone = "50933633283";
-            const userContent = document.getElementById(textareaId).value.trim();
-            
-            if(!userContent) return alert("Veuillez saisir votre message avant de contacter le support.");
-            
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            let user = db[currentSessionEmail];
-            
-            const msg = `🚨 *REQUÊTE SUPPORT CLIENT* 🚨\n\n` +
-                        `👤 *De* : ${user.name} (${user.email})\n` +
-                        `📱 *WhatsApp* : ${user.phone}\n\n` +
-                        `💬 *Message* : "${userContent}"`;
-                        
-            document.getElementById(textareaId).value = ""; 
-            window.open(`https://wa.me/${ownerPhone}?text=${encodeURIComponent(msg)}`, "_blank");
-        }
-
-        // --- ENVOI DIRECT PAR EMAIL (SI PAS DE WHATSAPP) ---
-        function contactCustomerServiceEmail(textareaId) {
-            const destinationEmail = localStorage.getItem("admin_support_email");
-            const userContent = document.getElementById(textareaId).value.trim();
-            
-            if(!userContent) return alert("Veuillez rédiger un texte dans la zone de saisie avant de solliciter le support email.");
-            
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            let user = db[currentSessionEmail];
-
-            const subject = encodeURIComponent(`Support Ultra Stream - Message de ${user.name}`);
-            const body = encodeURIComponent(
-                `Bonjour Luckenson Nelly,\n\n` +
-                `Voici ma demande d'assistance :\n` +
-                `"${userContent}"\n\n` +
-                `-----------------------------------------\n` +
-                `Métadonnées du Compte Client :\n` +
-                `- Nom complet : ${user.name}\n` +
-                `- Identifiant unique : ${user.email}\n` +
-                `- Téléphone de secours : ${user.phone}\n` +
-                `-----------------------------------------\n` +
-                `Envoyé depuis l'application Ultra Stream.`
-            );
-
-            document.getElementById(textareaId).value = ""; 
-            window.location.href = `mailto:${destinationEmail}?subject=${subject}&body=${body}`;
-        }
-
-        function cancelClientPlan() {
-            const confirmAction = confirm("⚠️ ATTENTION : L'annulation de forfait en cours est immédiate et irréversible.");
-            if (!confirmAction) return;
-
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            db[currentSessionEmail].plan = "Aucun";
-            db[currentSessionEmail].amount = 0;
-            db[currentSessionEmail].daysLeft = 0;
-            db[currentSessionEmail].status = "NONE";
-            db[currentSessionEmail].adminMessage = "";
-
-            localStorage.setItem("global_clients_db", JSON.stringify(db));
-            alert("Votre abonnement a été révoqué.");
-            processLogout();
-        }
-
-        // --- PANNEAU ADMINISTRATEUR ---
-        function buildAdminDashboard() {
-            buildHistoryTable();
-
-            const container = document.getElementById("adminClientsList");
-            container.innerHTML = "";
-            
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            const clientsKeys = Object.keys(db);
-
-            if (clientsKeys.length === 0) {
-                container.innerHTML = `<p style="color:#666; text-align:left;">Aucun client dans la base de données globale.</p>`;
-                return;
-            }
-
-            clientsKeys.forEach(key => {
-                const client = db[key];
-                const card = document.createElement("div");
-                card.className = "admin-client-card";
-                
-                let actionBtn = "";
-                let statusColor = "#aaa";
-
-                if (client.status === "PENDING") {
-                    statusColor = "var(--natcash)";
-                    actionBtn = `<button class="btn" style="background-color:var(--success); margin-bottom:10px; font-size:0.9rem; padding:8px;" onclick="adminApproveClient('${client.email}')">✔️ Activer & Valider</button>`;
-                } else if (client.status === "ACTIVE") {
-                    statusColor = "var(--success)";
-                }
-
-                card.innerHTML = `
-                    <h4>
-                        <span>${client.name}</span>
-                        <button class="btn btn-delete" onclick="adminDeleteAccount('${client.email}')">Supprimer le Compte 🗑️</button>
-                    </h4>
-                    <p style="margin:5px 0; font-size:0.9rem;"><strong>ID :</strong> ${client.email} | <strong>WhatsApp :</strong> ${client.phone}</p>
-                    <p style="margin:5px 0; font-size:0.9rem;"><strong>Forfait :</strong> <span style="color:var(--primary); font-weight:bold;">${client.plan}</span> (${client.amount} HTG)</p>
-                    <p style="margin:5px 0; font-size:0.9rem;"><strong>Validité :</strong> ${client.daysLeft} jours | <strong>État :</strong> <span style="color:${statusColor}; font-weight:bold;">${client.status}</span></p>
-                    
-                    <div style="margin-top:15px; border-top:1px solid #222; padding-top:10px;">
-                        <label style="font-size:0.8rem; margin-bottom:4px;">✉️ Laisser une note d'accès ou réponse au client :</label>
-                        <div style="display:flex; gap:10px;">
-                            <input type="text" id="replyField-${client.email.replace(/[@.]/g, '_')}" placeholder="Données de connexion, profil..." value="${client.adminMessage || ''}">
-                            <button class="btn" style="width:auto; font-size:0.85rem; padding:0 15px; background-color:var(--admin-color);" onclick="adminSendMessage('${client.email}')">Lier la note</button>
-                        </div>
-                    </div>
-                    <div style="margin-top:15px; display:flex; gap:10px;">
-                        ${actionBtn}
-                        <button class="btn btn-cancel" style="padding:6px; font-size:0.85rem; width:auto; margin:0;" onclick="adminForceDisconnect('${client.email}')">Révoquer Forfait</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function buildHistoryTable() {
-            const historyTableBody = document.getElementById("adminHistoryTableBody");
-            historyTableBody.innerHTML = "";
-            let history = JSON.parse(localStorage.getItem("global_orders_history"));
-
-            if(history.length === 0) {
-                historyTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#555;">Aucune commande enregistrée.</td></tr>`;
-                return;
-            }
-
-            history.forEach(item => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td>${item.date}</td>
-                    <td style="color:var(--admin-color);">${item.email}</td>
-                    <td><strong>${item.plan}</strong></td>
-                    <td style="color:var(--natcash); font-weight:bold;">${item.amount} HTG</td>
-                    <td><span style="color:${item.status==='ACTIVE'?'var(--success)':'var(--natcash)'}">${item.status}</span></td>
-                `;
-                historyTableBody.appendChild(tr);
-            });
-        }
-
-        function filterHistoryTable() {
-            const filterValue = document.getElementById("historyFilterDate").value.toLowerCase();
-            const rows = document.querySelectorAll("#adminHistoryTableBody tr");
-
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                if(text.includes(filterValue)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        }
-
-        function adminClearHistory() {
-            const confirmClear = confirm("🚨 Vider l'historique complet ? Cette opération est définitive.");
-            if(!confirmClear) return;
-            localStorage.setItem("global_orders_history", JSON.stringify([]));
-            buildHistoryTable();
-        }
-
-        function adminApproveClient(clientEmail) {
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            let history = JSON.parse(localStorage.getItem("global_orders_history"));
-
-            db[clientEmail].status = "ACTIVE";
-            db[clientEmail].adminMessage = "Activation accordée. Vos accès personnels sont configurés.";
-            
-            for(let i=0; i<history.length; i++) {
-                if(history[i].email === clientEmail && history[i].status === "PENDING") {
-                    history[i].status = "ACTIVE";
-                    break;
-                }
-            }
-
-            localStorage.setItem("global_clients_db", JSON.stringify(db));
-            localStorage.setItem("global_orders_history", JSON.stringify(history));
-            alert(`Accès activé.`);
-            buildAdminDashboard();
-        }
-
-        function adminSendMessage(clientEmail) {
-            const inputId = `replyField-${clientEmail.replace(/[@.]/g, '_')}`;
-            const msgText = document.getElementById(inputId).value.trim();
-            
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            db[clientEmail].adminMessage = msgText;
-            
-            localStorage.setItem("global_clients_db", JSON.stringify(db));
-            alert("Note partagée avec succès.");
-            buildAdminDashboard();
-        }
-
-        function adminForceDisconnect(clientEmail) {
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            db[clientEmail].plan = "Aucun";
-            db[clientEmail].amount = 0;
-            db[clientEmail].daysLeft = 0;
-            db[clientEmail].status = "NONE";
-            db[clientEmail].adminMessage = "Forfait révoqué par l'administration.";
-
-            localStorage.setItem("global_clients_db", JSON.stringify(db));
-            buildAdminDashboard();
-        }
-
-        function adminDeleteAccount(clientEmail) {
-            if(!confirm(`Supprimer définitivement ${clientEmail} ?`)) return;
-            let db = JSON.parse(localStorage.getItem("global_clients_db"));
-            delete db[clientEmail]; 
-            localStorage.setItem("global_clients_db", JSON.stringify(db));
-            buildAdminDashboard();
-        }
-
-        // Init Engine
-        renderViews();
-    </script>
+    <!-- LOGIN FORM -->
+    <div id="tab-login">
+      <h2 class="font-bold mb-2" style="font-size:20px">Connexion</h2>
+      <p class="text-muted text-sm mb-4">Accédez à votre compte pour gérer vos abonnements.</p>
+      <div class="form-group">
+        <label class="label">Email ou Téléphone</label>
+        <input type="text" id="login-identifier" class="input" placeholder="Email ou Téléphone" autocomplete="username" />
+      </div>
+      <div class="form-group">
+        <label class="label">Mot de passe</label>
+        <input type="password" id="login-password" class="input" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+      <button class="btn btn-primary w-full" onclick="doLogin()" id="btn-login">Se connecter</button>
+      <p class="text-center text-muted text-sm mt-4">
+        Pas encore de compte ? <a onclick="showAuthTab('register')" style="cursor:pointer">Inscrivez-vous</a>
+      </p>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="tab-register" class="hidden">
+      <h2 class="font-bold mb-2" style="font-size:20px">Créer un compte</h2>
+      <p class="text-muted text-sm mb-4">Rejoignez Ultra Stream Platform dès aujourd'hui.</p>
+      <div class="form-group">
+        <label class="label">Nom complet</label>
+        <input type="text" id="reg-name" class="input" placeholder="Votre nom complet" />
+      </div>
+      <div class="form-group">
+        <label class="label">Téléphone WhatsApp</label>
+        <input type="tel" id="reg-phone" class="input" placeholder="+509 XXXX XXXX" />
+      </div>
+      <div class="form-group">
+        <label class="label">Email</label>
+        <input type="email" id="reg-email" class="input" placeholder="email@exemple.com" />
+      </div>
+      <div class="form-group">
+        <label class="label">Mot de passe</label>
+        <input type="password" id="reg-password" class="input" placeholder="Minimum 6 caractères" autocomplete="new-password" />
+      </div>
+      <button class="btn btn-primary w-full" onclick="doRegister()">Créer le compte</button>
+      <p class="text-center text-muted text-sm mt-4">
+        Déjà un compte ? <a onclick="showAuthTab('login')" style="cursor:pointer">Se connecter</a>
+      </p>
+    </div>
+  </div>
+
+  <footer class="mt-4" style="background:transparent;border:none;">
+    <span class="copyright-seal">
+      ©&nbsp;<strong>2026 DIMANCHE LUCKENSON NELLY</strong>&nbsp;— Tous droits réservés
+    </span>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════ CLIENT DASHBOARD -->
+<div id="page-dashboard" class="hidden">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="logo-icon" style="width:32px;height:32px;border-radius:8px;">
+        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      UltraStream
+      <div class="dot"></div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span id="dash-username" class="text-sm text-muted"></span>
+      <button class="btn btn-secondary btn-sm" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </nav>
+
+  <div class="dashboard-content">
+    <!-- Messages de l'admin -->
+    <div id="dash-messages-section" class="hidden mb-4">
+      <div class="card" style="padding:16px;">
+        <h3 class="font-semibold mb-2">📨 Messages de l'administration</h3>
+        <div id="dash-messages-list"></div>
+      </div>
+    </div>
+
+    <!-- Plan actif -->
+    <div id="dash-active-plan" class="hidden mb-4">
+      <div class="status-banner">
+        <div class="flex justify-between items-center flex-wrap gap-3">
+          <div>
+            <p class="text-muted text-sm">Plan actif</p>
+            <h2 id="dash-plan-name" class="font-bold" style="font-size:22px;"></h2>
+            <p id="dash-plan-expiry" class="text-muted text-sm mt-1"></p>
+          </div>
+          <div class="text-right">
+            <span class="badge badge-green">✓ Actif</span>
+            <p id="dash-plan-days" class="text-sm mt-1 text-green font-bold"></p>
+          </div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="dash-progress" style="width:80%"></div>
+        </div>
+        <div class="flex gap-2 mt-3 flex-wrap">
+          <button class="btn btn-secondary btn-sm" onclick="cancelPlan()">Annuler le plan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commande en attente -->
+    <div id="dash-pending-order" class="hidden mb-4">
+      <div class="card" style="border-color: var(--yellow);">
+        <div class="flex items-center gap-3 mb-2">
+          <span style="font-size:24px">⏳</span>
+          <div>
+            <h3 class="font-bold">Commande en attente</h3>
+            <p class="text-muted text-sm">Votre commande est en cours de traitement.</p>
+          </div>
+        </div>
+        <p id="dash-pending-plan" class="font-semibold text-yellow"></p>
+        <div id="dash-proof-section" class="mt-3">
+          <p class="text-sm text-muted mb-2">Preuve de paiement envoyée : <span id="dash-proof-status" class="font-bold"></span></p>
+          <div id="dash-upload-proof-btn-wrap">
+            <div class="proof-zone" onclick="document.getElementById('proof-input').click()">
+              <p style="font-size:28px">📸</p>
+              <p class="font-semibold mt-1">Envoyer ma preuve de paiement</p>
+              <p class="text-muted text-sm mt-1">Cliquez pour choisir une image (JPG, PNG)</p>
+              <input type="file" id="proof-input" accept="image/*" class="hidden" onchange="uploadProof(this)" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Choisir un plan -->
+    <div id="dash-choose-plan">
+      <h2 class="font-bold mb-2" style="font-size:22px">Choisir un forfait</h2>
+      <p class="text-muted text-sm mb-4">Sélectionnez le forfait qui vous convient.</p>
+      <div class="plans-grid mb-4" id="plans-grid"></div>
+
+      <!-- Paiement -->
+      <div id="dash-payment-section" class="hidden card">
+        <h3 class="font-semibold mb-3">💳 Instructions de paiement</h3>
+        <div class="payment-box mb-3">
+          <p class="text-sm text-muted mb-1">Envoyez le montant via <strong>NATCASH</strong> au numéro :</p>
+          <p class="natcash-number">+509 3363 3283</p>
+          <p class="text-xs text-muted mt-1">Nom : DIMANCHE LUCKENSON NELLY</p>
+        </div>
+        <div class="payment-box">
+          <p class="text-sm text-muted mb-1">Montant à payer :</p>
+          <p id="dash-pay-amount" class="font-bold" style="font-size:22px; color:var(--primary)"></p>
+          <p id="dash-pay-plan" class="text-sm text-muted mt-1"></p>
+        </div>
+        <div class="flex gap-3 mt-4 flex-wrap">
+          <button class="btn btn-primary" onclick="confirmOrder()">✅ J'ai payé — Soumettre la commande</button>
+          <a id="whatsapp-link" href="#" target="_blank" class="btn btn-green">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <button class="btn btn-secondary" onclick="cancelSelection()">Annuler</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support -->
+    <div class="card mt-4">
+      <h3 class="font-semibold mb-3">💬 Support & Messages</h3>
+      <div id="dash-support-messages" class="mb-3"></div>
+      <div class="flex gap-2">
+        <input type="text" id="support-input" class="input" placeholder="Écrivez votre message…" onkeydown="if(event.key==='Enter')sendSupportMsg()" />
+        <button class="btn btn-secondary" onclick="sendSupportMsg()">Envoyer</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p><strong>Ultra Stream Platform</strong> — Service professionnel de gestion d'abonnements streaming en Haïti</p>
+    <p class="mt-1">
+      <span class="copyright-seal" style="margin-top:6px;display:inline-flex;">
+        ©&nbsp;<strong>2026 DIMANCHE LUCKENSON NELLY</strong>&nbsp;— Tous droits réservés
+      </span>
+    </p>
+    <p class="mt-1 text-xs" style="color:#555">Ultra Stream Platform v2.0 — Propriété exclusive de DIMANCHE LUCKENSON NELLY — Haïti, 2026</p>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ ADMIN PANEL -->
+<div id="page-admin" class="hidden">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="logo-icon" style="width:32px;height:32px;border-radius:8px;">
+        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      UltraStream <span style="font-size:11px;background:var(--primary);padding:2px 8px;border-radius:999px;margin-left:4px;">ADMIN</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="btn btn-secondary btn-sm" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </nav>
+
+  <div class="admin-content">
+    <!-- Stats -->
+    <div class="stats-grid" id="admin-stats"></div>
+
+    <!-- Search -->
+    <div class="flex justify-between items-center flex-wrap gap-3 mb-4">
+      <div class="search-box" style="max-width:300px;flex:1;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="admin-search" class="input" placeholder="Rechercher un client…" oninput="renderClients()" />
+      </div>
+      <button class="btn btn-red btn-sm" onclick="clearHistory()">🗑 Vider l'historique</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" id="atab-clients-btn" onclick="showAdminTab('clients')">👥 Clients</button>
+      <button class="admin-tab" id="atab-history-btn" onclick="showAdminTab('history')">📋 Historique</button>
+    </div>
+
+    <!-- Clients table -->
+    <div id="atab-clients">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Téléphone</th>
+              <th>Plan</th>
+              <th>Statut</th>
+              <th>Expiration</th>
+              <th>Preuve</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="clients-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- History table -->
+    <div id="atab-history" class="hidden">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Client</th>
+              <th>Plan</th>
+              <th>Montant</th>
+              <th>Action</th>
+              <th>Preuve</th>
+              <th>Détails</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p><strong>Ultra Stream Platform — Panneau d'administration</strong></p>
+    <p class="mt-1">
+      <span class="copyright-seal" style="margin-top:6px;display:inline-flex;">
+        ©&nbsp;<strong>2026 DIMANCHE LUCKENSON NELLY</strong>&nbsp;— Tous droits réservés
+      </span>
+    </p>
+    <p class="mt-1 text-xs" style="color:#555">Ultra Stream Platform v2.0 — Propriété exclusive de DIMANCHE LUCKENSON NELLY — Haïti, 2026. Toute reproduction interdite.</p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ MODALS -->
+
+<!-- Modal Message -->
+<div id="modal-message" class="modal-backdrop hidden" onclick="if(event.target===this)closeModal('modal-message')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="font-bold">Envoyer un message</h3>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-message')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="msg-client-id" />
+      <p id="msg-client-name" class="font-semibold mb-3"></p>
+      <label class="label">Message</label>
+      <textarea id="msg-text" class="input" rows="4" placeholder="Votre message…" style="resize:vertical"></textarea>
+      <button class="btn btn-primary w-full mt-3" onclick="doSendAdminMsg()">Envoyer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal History Detail -->
+<div id="modal-history" class="modal-backdrop hidden" onclick="if(event.target===this)closeModal('modal-history')">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="font-bold">Détails de l'historique</h3>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-history')">✕</button>
+    </div>
+    <div class="modal-body" id="modal-history-body"></div>
+  </div>
+</div>
+
+<!-- Modal Proof -->
+<div id="modal-proof" class="modal-backdrop hidden" onclick="if(event.target===this)closeModal('modal-proof')">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <h3 class="font-bold">Preuve de paiement</h3>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-proof')">✕</button>
+    </div>
+    <div class="modal-body text-center">
+      <img id="modal-proof-img" src="" alt="Preuve" style="max-width:100%;border-radius:10px;" />
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════ JAVASCRIPT -->
+<script>
+/*
+ * ╔══════════════════════════════════════════════════════════════════╗
+ * ║  Ultra Stream Platform v2.0 — JavaScript Engine                 ║
+ * ║  © 2026 DIMANCHE LUCKENSON NELLY. Tous droits réservés.         ║
+ * ║  Propriété exclusive — Haïti, 2026                              ║
+ * ╚══════════════════════════════════════════════════════════════════╝
+ */
+
+/* ── Constants ─────────────────────────────────────────────────────── */
+const ADMIN_USER = "DIMANCHE Luckenson Nelly";
+const ADMIN_PASS = "admin123";
+const NATCASH    = "+509 3363 3283";
+const WA_NUMBER  = "50933633283";
+
+const PLANS = [
+  { id: "Eco",     name: "Forfait Éco",     price: 500,  days: 30, desc: "Téléchargement inclus, pas de partage de profil" },
+  { id: "Avancé",  name: "Forfait Avancé",  price: 1000, days: 35, desc: "Téléchargement inclus, partage avec 1 personne" },
+  { id: "Pro VIP", name: "Forfait Pro VIP", price: 1500, days: 45, desc: "Téléchargement inclus, partage avec 2 personnes" },
+];
+
+/* ── Storage helpers ───────────────────────────────────────────────── */
+function getClients()  { return JSON.parse(localStorage.getItem("usp_clients")  || "[]"); }
+function getHistory()  { return JSON.parse(localStorage.getItem("usp_history")  || "[]"); }
+function saveClients(d){ localStorage.setItem("usp_clients",  JSON.stringify(d)); }
+function saveHistory(d){ localStorage.setItem("usp_history",  JSON.stringify(d)); }
+function getSession()  { return JSON.parse(sessionStorage.getItem("usp_session") || "null"); }
+function setSession(d) { sessionStorage.setItem("usp_session", JSON.stringify(d)); }
+function clearSession(){ sessionStorage.removeItem("usp_session"); }
+function genId()       { return Date.now() + Math.random().toString(36).slice(2,7); }
+
+/* ── State ─────────────────────────────────────────────────────────── */
+let selectedPlan = null;
+let pollInterval = null;
+
+/* ── Page navigation ────────────────────────────────────────────────── */
+function showPage(id) {
+  ["page-auth","page-dashboard","page-admin"].forEach(p => {
+    document.getElementById(p).classList.toggle("hidden", p !== id);
+  });
+}
+
+/* ── Auth Tab ───────────────────────────────────────────────────────── */
+function showAuthTab(tab) {
+  document.getElementById("tab-login").classList.toggle("hidden", tab !== "login");
+  document.getElementById("tab-register").classList.toggle("hidden", tab !== "register");
+  document.getElementById("tab-login-btn").classList.toggle("active", tab === "login");
+  document.getElementById("tab-register-btn").classList.toggle("active", tab === "register");
+}
+
+/* ── Login ──────────────────────────────────────────────────────────── */
+function doLogin() {
+  const id  = document.getElementById("login-identifier").value.trim();
+  const pwd = document.getElementById("login-password").value;
+  if (!id || !pwd) { toast("Veuillez remplir tous les champs.", "error"); return; }
+
+  if (id === ADMIN_USER && pwd === ADMIN_PASS) {
+    setSession({ role: "admin", id: "admin" });
+    showPage("page-admin");
+    initAdmin();
+    return;
+  }
+
+  const clients = getClients();
+  const client  = clients.find(c => (c.email === id || c.phone === id) && c.password === pwd);
+  if (!client) { toast("Identifiant ou mot de passe incorrect.", "error"); return; }
+
+  setSession({ role: "client", id: client.id });
+  showPage("page-dashboard");
+  initDashboard();
+}
+
+/* ── Register ───────────────────────────────────────────────────────── */
+function doRegister() {
+  const name  = document.getElementById("reg-name").value.trim();
+  const phone = document.getElementById("reg-phone").value.trim();
+  const email = document.getElementById("reg-email").value.trim();
+  const pwd   = document.getElementById("reg-password").value;
+
+  if (!name || !phone || !email || !pwd) { toast("Tous les champs sont requis.", "error"); return; }
+  if (pwd.length < 6) { toast("Le mot de passe doit faire au moins 6 caractères.", "error"); return; }
+
+  const clients = getClients();
+  if (clients.find(c => c.email === email || c.phone === phone)) {
+    toast("Un compte avec cet email ou ce téléphone existe déjà.", "error"); return;
+  }
+
+  const newClient = {
+    id: genId(), name, phone, email, password: pwd,
+    plan: null, status: "inactive", activatedAt: null, expiresAt: null,
+    paymentProof: null, messages: [], pendingOrder: null
+  };
+  clients.push(newClient);
+  saveClients(clients);
+  toast("Compte créé avec succès ! Connectez-vous.", "success");
+  showAuthTab("login");
+}
+
+/* ── Logout ─────────────────────────────────────────────────────────── */
+function doLogout() {
+  clearSession();
+  clearInterval(pollInterval);
+  selectedPlan = null;
+  document.getElementById("login-identifier").value = "";
+  document.getElementById("login-password").value = "";
+  showPage("page-auth");
+  toast("Déconnexion réussie.", "info");
+}
+
+/* ══════════════════════════════════════════════ CLIENT DASHBOARD ══ */
+
+function initDashboard() {
+  const sess = getSession();
+  if (!sess || sess.role !== "client") { showPage("page-auth"); return; }
+  selectedPlan = null;
+  renderDashboard();
+  clearInterval(pollInterval);
+  pollInterval = setInterval(renderDashboard, 4000);
+}
+
+function renderDashboard() {
+  const sess = getSession();
+  if (!sess || sess.role !== "client") return;
+  const clients = getClients();
+  const me = clients.find(c => c.id === sess.id);
+  if (!me) { doLogout(); return; }
+
+  document.getElementById("dash-username").textContent = me.name;
+
+  // Messages de l'admin
+  const msgs = (me.messages || []).filter(m => m.from === "admin");
+  const msgsSection = document.getElementById("dash-messages-section");
+  const msgsList = document.getElementById("dash-messages-list");
+  if (msgs.length > 0) {
+    msgsSection.classList.remove("hidden");
+    msgsList.innerHTML = msgs.map(m =>
+      `<div class="msg-bubble msg-from-admin">
+        <span class="text-xs text-muted">${formatDate(m.at)}</span>
+        <p class="mt-1">${escHtml(m.text)}</p>
+      </div>`
+    ).join("");
+  } else {
+    msgsSection.classList.add("hidden");
+  }
+
+  // Messages support (tous)
+  const allMsgs = me.messages || [];
+  const supportDiv = document.getElementById("dash-support-messages");
+  if (allMsgs.length > 0) {
+    supportDiv.innerHTML = allMsgs.map(m =>
+      `<div class="msg-bubble ${m.from === 'admin' ? 'msg-from-admin' : 'msg-from-client'}">
+        <span class="text-xs text-muted font-semibold">${m.from === 'admin' ? '🔴 Admin' : '🟦 Vous'} · ${formatDate(m.at)}</span>
+        <p class="mt-1">${escHtml(m.text)}</p>
+      </div>`
+    ).join("");
+  } else {
+    supportDiv.innerHTML = `<p class="text-muted text-sm">Aucun message pour l'instant.</p>`;
+  }
+
+  const activePlanDiv  = document.getElementById("dash-active-plan");
+  const pendingDiv     = document.getElementById("dash-pending-order");
+  const choosePlanDiv  = document.getElementById("dash-choose-plan");
+
+  // Plan actif
+  if (me.status === "active" && me.plan) {
+    activePlanDiv.classList.remove("hidden");
+    pendingDiv.classList.add("hidden");
+    choosePlanDiv.classList.add("hidden");
+    const planInfo = PLANS.find(p => p.id === me.plan) || { name: me.plan, days: 30 };
+    document.getElementById("dash-plan-name").textContent = planInfo.name;
+    const expiry = me.expiresAt ? new Date(me.expiresAt) : null;
+    const daysLeft = expiry ? Math.max(0, Math.ceil((expiry - Date.now()) / 86400000)) : 0;
+    document.getElementById("dash-plan-expiry").textContent = expiry ? `Expire le ${expiry.toLocaleDateString("fr-FR")}` : "";
+    document.getElementById("dash-plan-days").textContent = `${daysLeft} jour(s) restant(s)`;
+    const pct = expiry ? Math.min(100, Math.max(0, (daysLeft / planInfo.days) * 100)) : 0;
+    document.getElementById("dash-progress").style.width = pct + "%";
+  } else if (me.pendingOrder) {
+    activePlanDiv.classList.add("hidden");
+    pendingDiv.classList.remove("hidden");
+    choosePlanDiv.classList.add("hidden");
+    const planInfo = PLANS.find(p => p.id === me.pendingOrder.planId) || { name: me.pendingOrder.planId };
+    document.getElementById("dash-pending-plan").textContent = `${planInfo.name} — ${me.pendingOrder.amount} HTG`;
+    const proofStatus = document.getElementById("dash-proof-status");
+    const uploadWrap  = document.getElementById("dash-upload-proof-btn-wrap");
+    if (me.paymentProof) {
+      proofStatus.textContent = "✅ Reçue";
+      proofStatus.className = "font-bold text-green";
+      uploadWrap.innerHTML = `<img src="${me.paymentProof}" alt="Preuve" style="max-width:200px;border-radius:8px;cursor:pointer" onclick="openProof('${me.paymentProof}')" />`;
+    } else {
+      proofStatus.textContent = "En attente";
+      proofStatus.className = "font-bold text-yellow";
+      uploadWrap.innerHTML = `<div class="proof-zone" onclick="document.getElementById('proof-input').click()">
+        <p style="font-size:28px">📸</p>
+        <p class="font-semibold mt-1">Envoyer ma preuve de paiement</p>
+        <p class="text-muted text-sm mt-1">Cliquez pour choisir une image</p>
+        <input type="file" id="proof-input" accept="image/*" class="hidden" onchange="uploadProof(this)" />
+      </div>`;
+    }
+  } else {
+    activePlanDiv.classList.add("hidden");
+    pendingDiv.classList.add("hidden");
+    choosePlanDiv.classList.remove("hidden");
+    renderPlans();
+  }
+}
+
+function renderPlans() {
+  const grid = document.getElementById("plans-grid");
+  grid.innerHTML = PLANS.map(p =>
+    `<div class="plan-card ${selectedPlan === p.id ? 'selected' : ''}" onclick="selectPlan('${p.id}')">
+      ${selectedPlan === p.id ? '<div class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
+      <h3 class="font-bold" style="font-size:16px;">${p.name}</h3>
+      <p class="plan-price mt-2">${p.price.toLocaleString()} <span>HTG</span></p>
+      <p class="text-muted text-sm mt-1">${p.days} jours</p>
+      <p class="text-sm mt-3" style="color:#ccc">${p.desc}</p>
+    </div>`
+  ).join("");
+}
+
+function selectPlan(planId) {
+  selectedPlan = planId;
+  renderPlans();
+  const plan = PLANS.find(p => p.id === planId);
+  document.getElementById("dash-payment-section").classList.remove("hidden");
+  document.getElementById("dash-pay-amount").textContent = plan.price.toLocaleString() + " HTG";
+  document.getElementById("dash-pay-plan").textContent = `${plan.name} — ${plan.days} jours`;
+  const msg = `Bonjour ! Je souhaite m'abonner au ${plan.name} (${plan.price} HTG). Voici ma preuve de paiement.`;
+  document.getElementById("whatsapp-link").href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  document.getElementById("dash-payment-section").scrollIntoView({ behavior: "smooth" });
+}
+
+function cancelSelection() {
+  selectedPlan = null;
+  renderPlans();
+  document.getElementById("dash-payment-section").classList.add("hidden");
+}
+
+function confirmOrder() {
+  if (!selectedPlan) { toast("Veuillez sélectionner un plan.", "error"); return; }
+  const plan = PLANS.find(p => p.id === selectedPlan);
+  const sess = getSession();
+  const clients = getClients();
+  const idx = clients.findIndex(c => c.id === sess.id);
+  if (idx < 0) return;
+
+  clients[idx].pendingOrder = { planId: selectedPlan, amount: plan.price, date: new Date().toISOString() };
+  clients[idx].status = "pending";
+  saveClients(clients);
+
+  const history = getHistory();
+  history.unshift({
+    id: genId(), clientId: clients[idx].id, clientName: clients[idx].name,
+    clientPhone: clients[idx].phone, plan: plan.name, amount: plan.price,
+    action: "Commande soumise", date: new Date().toISOString(), proof: null
+  });
+  saveHistory(history);
+
+  selectedPlan = null;
+  toast("Commande soumise ! En attente de validation.", "success");
+  renderDashboard();
+}
+
+function uploadProof(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024) { toast("L'image est trop lourde (max 10 Mo).", "error"); return; }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const sess = getSession();
+    const clients = getClients();
+    const idx = clients.findIndex(c => c.id === sess.id);
+    if (idx < 0) return;
+    clients[idx].paymentProof = e.target.result;
+    saveClients(clients);
+    const history = getHistory();
+    history.unshift({
+      id: genId(), clientId: clients[idx].id, clientName: clients[idx].name,
+      clientPhone: clients[idx].phone,
+      plan: clients[idx].pendingOrder ? (PLANS.find(p=>p.id===clients[idx].pendingOrder.planId)||{name:clients[idx].pendingOrder.planId}).name : "—",
+      amount: clients[idx].pendingOrder ? clients[idx].pendingOrder.amount : 0,
+      action: "Preuve de paiement envoyée", date: new Date().toISOString(), proof: e.target.result
+    });
+    saveHistory(history);
+    toast("Preuve de paiement envoyée !", "success");
+    renderDashboard();
+  };
+  reader.readAsDataURL(file);
+}
+
+function cancelPlan() {
+  if (!confirm("Voulez-vous annuler votre plan ?")) return;
+  const sess = getSession();
+  const clients = getClients();
+  const idx = clients.findIndex(c => c.id === sess.id);
+  if (idx < 0) return;
+  clients[idx].plan = null; clients[idx].status = "inactive";
+  clients[idx].activatedAt = null; clients[idx].expiresAt = null;
+  saveClients(clients);
+  const history = getHistory();
+  history.unshift({
+    id: genId(), clientId: clients[idx].id, clientName: clients[idx].name,
+    clientPhone: clients[idx].phone, plan: "—", amount: 0,
+    action: "Plan annulé par le client", date: new Date().toISOString(), proof: null
+  });
+  saveHistory(history);
+  toast("Plan annulé.", "info");
+  renderDashboard();
+}
+
+function sendSupportMsg() {
+  const input = document.getElementById("support-input");
+  const text  = input.value.trim();
+  if (!text) return;
+  const sess = getSession();
+  const clients = getClients();
+  const idx = clients.findIndex(c => c.id === sess.id);
+  if (idx < 0) return;
+  if (!clients[idx].messages) clients[idx].messages = [];
+  clients[idx].messages.push({ from: "client", text, at: new Date().toISOString() });
+  saveClients(clients);
+  input.value = "";
+  toast("Message envoyé.", "success");
+  renderDashboard();
+}
+
+/* ══════════════════════════════════════════════════ ADMIN PANEL ══ */
+
+function initAdmin() {
+  const sess = getSession();
+  if (!sess || sess.role !== "admin") { showPage("page-auth"); return; }
+  renderAdmin();
+  clearInterval(pollInterval);
+  pollInterval = setInterval(renderAdmin, 3000);
+}
+
+function renderAdmin() {
+  renderStats();
+  renderClients();
+  renderHistoryTable();
+}
+
+function renderStats() {
+  const clients  = getClients();
+  const active   = clients.filter(c => c.status === "active").length;
+  const pending  = clients.filter(c => c.status === "pending").length;
+  const inactive = clients.filter(c => c.status === "inactive").length;
+  const revenue  = getHistory().filter(h => h.action.includes("activé")).reduce((s, h) => s + (h.amount || 0), 0);
+
+  document.getElementById("admin-stats").innerHTML = `
+    <div class="stat-card"><div class="stat-value">${clients.length}</div><div class="stat-label">Clients totaux</div></div>
+    <div class="stat-card"><div class="stat-value text-green">${active}</div><div class="stat-label">Plans actifs</div></div>
+    <div class="stat-card"><div class="stat-value text-yellow">${pending}</div><div class="stat-label">En attente</div></div>
+    <div class="stat-card"><div class="stat-value text-red">${inactive}</div><div class="stat-label">Inactifs</div></div>
+    <div class="stat-card"><div class="stat-value text-primary">${revenue.toLocaleString()}</div><div class="stat-label">Revenus HTG</div></div>
+  `;
+}
+
+function renderClients() {
+  const search  = (document.getElementById("admin-search")?.value || "").toLowerCase();
+  const clients = getClients().filter(c =>
+    !search || c.name.toLowerCase().includes(search) || c.phone.includes(search) || (c.email||"").toLowerCase().includes(search)
+  );
+  const tbody = document.getElementById("clients-tbody");
+  if (!tbody) return;
+
+  if (clients.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding:32px;">Aucun client trouvé.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = clients.map(c => {
+    const planInfo = PLANS.find(p => p.id === c.plan);
+    const statusBadge = c.status === "active"
+      ? `<span class="badge badge-green">✓ Actif</span>`
+      : c.status === "pending"
+      ? `<span class="badge badge-yellow">⏳ En attente</span>`
+      : `<span class="badge badge-gray">Inactif</span>`;
+    const planName = c.pendingOrder
+      ? (PLANS.find(p=>p.id===c.pendingOrder.planId)||{name:c.pendingOrder.planId}).name + " ⌛"
+      : (planInfo ? planInfo.name : "—");
+    const expiry = c.expiresAt ? new Date(c.expiresAt).toLocaleDateString("fr-FR") : "—";
+    const proofBtn = c.paymentProof
+      ? `<button class="btn btn-secondary btn-sm" onclick="openProof('${c.id}')">📷 Voir</button>`
+      : `<span class="text-muted text-xs">Aucune</span>`;
+
+    return `<tr>
+      <td><div class="font-semibold">${escHtml(c.name)}</div><div class="text-xs text-muted">${escHtml(c.email||"")}</div></td>
+      <td>${escHtml(c.phone)}</td>
+      <td>${escHtml(planName)}</td>
+      <td>${statusBadge}</td>
+      <td>${expiry}</td>
+      <td>${proofBtn}</td>
+      <td>
+        <div class="actions-row">
+          ${c.status !== "active" ? `<button class="btn btn-green btn-sm" onclick="activateClient('${c.id}')">✓ Activer</button>` : ''}
+          ${c.status === "active" ? `<button class="btn btn-yellow btn-sm" onclick="revokeClient('${c.id}')">⏸ Révoquer</button>` : ''}
+          <button class="btn btn-secondary btn-sm" onclick="openMsgModal('${c.id}')">💬 Message</button>
+          <button class="btn btn-red btn-sm" onclick="deleteClient('${c.id}')">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join("");
+}
+
+function renderHistoryTable() {
+  const history = getHistory();
+  const tbody = document.getElementById("history-tbody");
+  if (!tbody) return;
+  if (history.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding:32px;">Aucun historique disponible.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = history.map(h => {
+    const actionBadge = h.action.includes("activé")
+      ? `<span class="badge badge-green">${escHtml(h.action)}</span>`
+      : h.action.includes("révoqué") || h.action.includes("annulé")
+      ? `<span class="badge badge-red">${escHtml(h.action)}</span>`
+      : h.action.includes("soumise") || h.action.includes("attente")
+      ? `<span class="badge badge-yellow">${escHtml(h.action)}</span>`
+      : `<span class="badge badge-gray">${escHtml(h.action)}</span>`;
+    const proofBtn = h.proof
+      ? `<button class="btn btn-secondary btn-sm" onclick="openProofUrl('${h.proof.substring(0,20)}...',true,'${h.id}')">📷 Voir</button>`
+      : `<span class="text-muted text-xs">—</span>`;
+    return `<tr style="cursor:pointer" onclick="openHistoryModal('${h.id}')">
+      <td class="text-xs">${formatDate(h.date)}</td>
+      <td><div class="font-semibold">${escHtml(h.clientName||"—")}</div><div class="text-xs text-muted">${escHtml(h.clientPhone||"")}</div></td>
+      <td>${escHtml(h.plan||"—")}</td>
+      <td class="font-bold">${(h.amount||0).toLocaleString()} HTG</td>
+      <td>${actionBadge}</td>
+      <td>${proofBtn}</td>
+      <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openHistoryModal('${h.id}')">🔍 Détails</button></td>
+    </tr>`;
+  }).join("");
+}
+
+function showAdminTab(tab) {
+  document.getElementById("atab-clients").classList.toggle("hidden", tab !== "clients");
+  document.getElementById("atab-history").classList.toggle("hidden", tab !== "history");
+  document.getElementById("atab-clients-btn").classList.toggle("active", tab === "clients");
+  document.getElementById("atab-history-btn").classList.toggle("active", tab !== "clients");
+}
+
+function activateClient(id) {
+  const clients = getClients();
+  const idx = clients.findIndex(c => c.id === id);
+  if (idx < 0) return;
+  const c = clients[idx];
+  const planId = c.pendingOrder?.planId || c.plan;
+  const planInfo = PLANS.find(p => p.id === planId) || { name: planId || "Inconnu", days: 30 };
+  const now = new Date();
+  const expiry = new Date(now.getTime() + planInfo.days * 86400000);
+  clients[idx].status = "active";
+  clients[idx].plan = planId;
+  clients[idx].activatedAt = now.toISOString();
+  clients[idx].expiresAt = expiry.toISOString();
+  clients[idx].pendingOrder = null;
+  if (!clients[idx].messages) clients[idx].messages = [];
+  clients[idx].messages.push({
+    from: "admin",
+    text: `✅ Votre plan "${planInfo.name}" a été activé ! Expire le ${expiry.toLocaleDateString("fr-FR")}. Merci de votre confiance.`,
+    at: new Date().toISOString()
+  });
+  saveClients(clients);
+  const history = getHistory();
+  history.unshift({
+    id: genId(), clientId: c.id, clientName: c.name, clientPhone: c.phone,
+    plan: planInfo.name, amount: planInfo.price || 0,
+    action: `Plan activé`, date: new Date().toISOString(), proof: c.paymentProof
+  });
+  saveHistory(history);
+  toast(`Plan de ${c.name} activé jusqu'au ${expiry.toLocaleDateString("fr-FR")}.`, "success");
+  renderAdmin();
+}
+
+function revokeClient(id) {
+  if (!confirm("Révoquer le plan de ce client ?")) return;
+  const clients = getClients();
+  const idx = clients.findIndex(c => c.id === id);
+  if (idx < 0) return;
+  const c = clients[idx];
+  const planName = c.plan || "—";
+  clients[idx].status = "inactive";
+  clients[idx].plan = null;
+  clients[idx].activatedAt = null;
+  clients[idx].expiresAt = null;
+  clients[idx].paymentProof = null;
+  clients[idx].pendingOrder = null;
+  if (!clients[idx].messages) clients[idx].messages = [];
+  clients[idx].messages.push({
+    from: "admin",
+    text: `⚠️ Votre plan a été révoqué. Contactez l'administration pour plus d'informations.`,
+    at: new Date().toISOString()
+  });
+  saveClients(clients);
+  const history = getHistory();
+  history.unshift({
+    id: genId(), clientId: c.id, clientName: c.name, clientPhone: c.phone,
+    plan: planName, amount: 0, action: "Plan révoqué par admin", date: new Date().toISOString(), proof: null
+  });
+  saveHistory(history);
+  toast(`Plan de ${c.name} révoqué.`, "info");
+  renderAdmin();
+}
+
+function deleteClient(id) {
+  if (!confirm("Supprimer définitivement ce client ?")) return;
+  const clients = getClients().filter(c => c.id !== id);
+  saveClients(clients);
+  toast("Client supprimé.", "info");
+  renderAdmin();
+}
+
+function clearHistory() {
+  if (!confirm("Vider tout l'historique ? Cette action est irréversible.")) return;
+  saveHistory([]);
+  toast("Historique vidé.", "info");
+  renderHistoryTable();
+}
+
+function openMsgModal(clientId) {
+  const c = getClients().find(c => c.id === clientId);
+  if (!c) return;
+  document.getElementById("msg-client-id").value = clientId;
+  document.getElementById("msg-client-name").textContent = `Destinataire : ${c.name}`;
+  document.getElementById("msg-text").value = "";
+  openModal("modal-message");
+}
+
+function doSendAdminMsg() {
+  const id   = document.getElementById("msg-client-id").value;
+  const text = document.getElementById("msg-text").value.trim();
+  if (!text) { toast("Le message ne peut pas être vide.", "error"); return; }
+  const clients = getClients();
+  const idx = clients.findIndex(c => c.id === id);
+  if (idx < 0) return;
+  if (!clients[idx].messages) clients[idx].messages = [];
+  clients[idx].messages.push({ from: "admin", text, at: new Date().toISOString() });
+  saveClients(clients);
+  closeModal("modal-message");
+  toast("Message envoyé au client.", "success");
+}
+
+function openHistoryModal(hid) {
+  const h = getHistory().find(x => x.id === hid);
+  if (!h) return;
+  const c = getClients().find(x => x.id === h.clientId);
+  document.getElementById("modal-history-body").innerHTML = `
+    <div class="flex flex-col gap-3">
+      <div class="payment-box">
+        <p class="text-xs text-muted mb-1">Date</p>
+        <p class="font-semibold">${formatDate(h.date)}</p>
+      </div>
+      <div class="payment-box">
+        <p class="text-xs text-muted mb-1">Client</p>
+        <p class="font-semibold">${escHtml(h.clientName || "—")}</p>
+        <p class="text-sm text-muted">${escHtml(h.clientPhone || "")}</p>
+        ${c ? `<p class="text-sm text-muted">${escHtml(c.email || "")}</p>` : ""}
+      </div>
+      <div class="payment-box">
+        <p class="text-xs text-muted mb-1">Plan / Montant</p>
+        <p class="font-semibold">${escHtml(h.plan || "—")} — <span class="text-primary">${(h.amount||0).toLocaleString()} HTG</span></p>
+      </div>
+      <div class="payment-box">
+        <p class="text-xs text-muted mb-1">Action</p>
+        <p class="font-semibold">${escHtml(h.action || "—")}</p>
+      </div>
+      ${h.proof ? `
+      <div>
+        <p class="text-xs text-muted mb-2">Preuve de paiement</p>
+        <img src="${h.proof}" alt="Preuve" style="max-width:100%;border-radius:10px;cursor:pointer" onclick="openProofDirect('${h.id}')" />
+      </div>` : `<p class="text-muted text-sm">Aucune preuve de paiement.</p>`}
+      ${c ? `
+      <div class="flex gap-2 flex-wrap">
+        ${c.status !== "active" ? `<button class="btn btn-green" onclick="activateClient('${c.id}');closeModal('modal-history')">✓ Activer</button>` : ""}
+        ${c.status === "active" ? `<button class="btn btn-yellow" onclick="revokeClient('${c.id}');closeModal('modal-history')">⏸ Révoquer</button>` : ""}
+        <button class="btn btn-secondary" onclick="openMsgModal('${c.id}');closeModal('modal-history')">💬 Message</button>
+      </div>` : ""}
+    </div>
+  `;
+  openModal("modal-history");
+}
+
+function openProof(clientId) {
+  const c = getClients().find(c => c.id === clientId);
+  if (!c || !c.paymentProof) return;
+  document.getElementById("modal-proof-img").src = c.paymentProof;
+  openModal("modal-proof");
+}
+
+function openProofDirect(hid) {
+  const h = getHistory().find(x => x.id === hid);
+  if (!h || !h.proof) return;
+  document.getElementById("modal-proof-img").src = h.proof;
+  openModal("modal-proof");
+}
+
+/* ── Modals ─────────────────────────────────────────────────────────── */
+function openModal(id)  { document.getElementById(id).classList.remove("hidden"); }
+function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
+
+/* ── Toast ──────────────────────────────────────────────────────────── */
+function toast(message, type = "info") {
+  const icons = { success: "✅", error: "❌", info: "ℹ️" };
+  const el = document.createElement("div");
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span style="font-size:18px">${icons[type]||"ℹ️"}</span><span>${escHtml(message)}</span>`;
+  document.getElementById("toast-container").appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+/* ── Helpers ────────────────────────────────────────────────────────── */
+function escHtml(s) {
+  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function formatDate(iso) {
+  if (!iso) return "—";
+  try {
+    return new Date(iso).toLocaleString("fr-FR", { day:"2-digit", month:"2-digit", year:"numeric", hour:"2-digit", minute:"2-digit" });
+  } catch { return iso; }
+}
+
+/* ── Init ───────────────────────────────────────────────────────────── */
+(function init() {
+  const sess = getSession();
+  if (sess?.role === "admin") { showPage("page-admin"); initAdmin(); }
+  else if (sess?.role === "client") { showPage("page-dashboard"); initDashboard(); }
+  else { showPage("page-auth"); }
+})();
+
+/*
+ * ══════════════════════════════════════════════════════════════════════
+ * Ultra Stream Platform v2.0
+ * © 2026 DIMANCHE LUCKENSON NELLY — Tous droits réservés.
+ * Haïti, 2026. Toute reproduction ou distribution non autorisée
+ * est strictement interdite et passible de poursuites légales.
+ * ══════════════════════════════════════════════════════════════════════
+ */
+</script>
 </body>
 </html>
